@@ -24,13 +24,13 @@ SYNOPSIS
 
       # test that those things matched
       Test::Log4perl->end("Test that that logs okay");
-  
-      # we also have a simplified version:
+      
+  # we also have a simplified version:
       {
-        my $foo = Test::Logger->expect(['foo.bar.quux', warn => qr/hello/ ]);
+        my $foo = Test::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
         # ... do something that should log 'hello'
       }
-      # $foo goes out of scope; this triggers the test.  
+      # $foo goes out of scope; this triggers the test.
 
 DESCRIPTION
     This module can be used to test that you're logging the right thing with
@@ -75,15 +75,15 @@ DESCRIPTION
 
   Methods
     get_logger($category)
-        Returns a new instance of Test::Logger that can be used to log
+        Returns a new instance of Test::Log4perl that can be used to log
         expected messages in the category passed.
 
-    Test::Logger->expect(['dotted.path', 'warn' => qr'this', 'warn' =>
-    qr'that'], ..)
+    Test::Log4perl->expect(%start_args, ['dotted.path', 'warn' => qr'this',
+    'warn' => qr'that'], ..)
         Class convenience method. Used like this:
 
           { # start local scope
-            my $foo = Test::Logger->expect(['foo.bar.quux', warn => qr/hello/ ]);
+            my $foo = Test::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
             # ... do something that should log 'hello'
           } # $foo goes out of scope; this triggers the test.
 

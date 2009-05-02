@@ -13,7 +13,7 @@ use Carp qw(croak);
 use Scalar::Util qw(blessed);
 use Log::Log4perl qw(:levels);
 
-our $VERSION = '0.1001';
+our $VERSION = '0.1002';
 
 =head1 NAME
 
@@ -46,7 +46,7 @@ Test::Log4perl - test log4perl
   
   # we also have a simplified version:
   {
-    my $foo = Test::Logger->expect(['foo.bar.quux', warn => qr/hello/ ]);
+    my $foo = Test::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
     # ... do something that should log 'hello'
   }
   # $foo goes out of scope; this triggers the test.  
@@ -100,7 +100,7 @@ should do the comparisons.
 
 =item get_logger($category)
 
-Returns a new instance of Test::Logger that can be used to log
+Returns a new instance of Test::Log4perl that can be used to log
 expected messages in the category passed.
 
 =cut
@@ -113,21 +113,30 @@ sub get_logger
   return $self;
 }
 
-=item Test::Logger->expect(['dotted.path', 'warn' => qr'this', 'warn' => qr'that'], ..)
+=item Test::Log4perl->expect(%start_args, ['dotted.path', 'warn' => qr'this', 'warn' => qr'that'], ..)
 
 Class convenience method. Used like this:
 
   { # start local scope
-    my $foo = Test::Logger->expect(['foo.bar.quux', warn => qr/hello/ ]);
+    my $foo = Test::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
     # ... do something that should log 'hello'
   } # $foo goes out of scope; this triggers the test.
 
 =cut
 
 sub expect {
-  my ($class, @expects) = @_;
+  my $class = shift;
+  my (@start_args, @expects);
+  for (@_) {
+      if (ref($_) eq 'ARRAY') {
+          push @expects, $_;
+      }
+      else {
+          push @start_args, $_;
+      }
+  }
+  $class->start(@start_args);
   my @loggers;
-  $class->start(ignore_priority => "info");
   for (@expects) {
       my $name = shift @$_;
       my $tlogger = $class->get_logger($name);
