@@ -1,11 +1,11 @@
 package Test::Log::Log4perl;
-use base qw(Class::Accessor::Chained);
-__PACKAGE__->mk_accessors(qw(category));
+use strict;
+use warnings;
 
 use 5.8.8;
 
-use strict;
-use warnings;
+use base qw(Class::Accessor::Chained);
+__PACKAGE__->mk_accessors(qw(category));
 
 use Test::Builder;
 my $Tester = Test::Builder->new();
@@ -22,8 +22,6 @@ our $VERSION = '0.1002';
 Test::Log::Log4perl - test log4perl
 
 =head1 SYNOPSIS
-
-  use Test::More tests => 1;
 
   # setup l4p
   use Log::Log4Perl;
@@ -45,7 +43,7 @@ Test::Log::Log4perl - test log4perl
 
   # test that those things matched
   Test::Log::Log4perl->end("Test that that logs okay");
-  
+
   # we also have a simplified version:
   {
     my $foo = Test::Log::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
@@ -115,7 +113,7 @@ sub get_logger
   return $self;
 }
 
-=item Test::Log::Log4perl->expect(%start_args, ['dotted.path', 'warn' => qr'this', 'warn' => qr'that'], ..)
+=item Test::Log::Log4perl->expect(%start_args, ['dotted.path', 'warn' => qr(this), 'warn' => qr(that)], ..)
 
 Class convenience method. Used like this:
 
@@ -154,7 +152,7 @@ sub expect {
 
 =item start
 
-Class method.  Start logging.  When you call this method it temporarly
+Class method.  Start logging.  When you call this method it temporarily
 redirects all logging from the standard logging locations to the
 internal logging routine until end is called.  Takes parameters to
 change the behavior of this (and only this) test.  See below.
@@ -356,7 +354,7 @@ sub _matches
 Sometimes you're going to be testing something that generates a load
 of spurious log messages that you simply want to ignore without
 testing their contents, but you don't want to have to reconfigure
-your log file.  The simpliest way to do this is to do:
+your log file.  The simplest way to do this is to do:
 
   use Test::Log::Log4perl;
   Test::Log::Log4perl->suppress_logging;
@@ -365,39 +363,36 @@ All logging functions stop working.  Do not alter the Logging classes
 (for example, by changing the config file and use Log4perl's
 C<init_and_watch> functionality) after this call has been made.
 
-This function will be effectivly a no-op if the enviromental variable
-C<NO_SUPRESS_LOGGING> is set to a true value (so if your code is
+This function will be effectively a no-op if the environmental variable
+C<NO_SUPPRESS_LOGGING> is set to a true value (so if your code is
 behaving weirdly you can turn all the logging back on from the command
 line without changing any of the code)
 
 =cut
 
 # TODO: What if someone calls ->start() after this then, eh?
-# currently it'll test the logs and then stop supressing logging
+# currently it'll test the logs and then stop suppressing logging
 # is that what we want?  Because that's what'll happen.
-
-# I canna spell
-sub supress_logging { my $class = shift; $class->supress_logging(@_) }
 
 sub suppress_logging
 {
   my $class = shift;
 
-  return if $ENV{NO_SUPRESS_LOGGING};
+  return if $ENV{NO_SUPPRESS_LOGGING};
 
   # tell this to ignore everything.
    foreach (values %$Log::Log4perl::Logger::LOGGERS_BY_NAME)
     { bless $_, $class->ignore_all_class }
 }
 
-=head2 Selectivly Ignoring Logging Messages By Priority
+=head2 Selectively Ignoring Logging Messages By Priority
 
 It's a bad idea to completely ignore all messages.  What you probably
 want to do is ignore some of the trivial messages that you don't
 care about, and just test that there aren't any unexpected messages
 of a set priority.
 
-You can temporarly ignore any logging messages that are made by
+You can temporarily ignore any logging messages that are made by
 passing parameters to the C<start> routine
 
   # for this test, just ignore DEBUG, INFO, and WARN
@@ -428,9 +423,9 @@ you've played with the method calls mentioned below:)
   use Log::Log4perl qw(:levels);
   Test::Log::Log4perl->start( ignore_priority => $ALL );
 
-You can also perminatly effect what things are ignored with the
+You can also permanently effect what things are ignored with the
 C<ignore_priority> method call.  This persists between tests and isn't
-autoically reset after each call to C<start>.
+automatically reset after each call to C<start>.
 
   # ignore DEBUG, INFO and WARN for all future tests
   Test::Log::Log4perl->ignore_priority("warn");
@@ -445,7 +440,7 @@ autoically reset after each call to C<start>.
   # ignore nothing (messages will be logged reguardless of priority)
   Test::Log::Log4perl->ignore_priority("nothing");
 
-Obviously, you may temporarly override whatever perminant
+Obviously, you may temporarily override whatever permanent.
 
 =cut
 
@@ -559,16 +554,19 @@ Logging methods don't return the number of appenders they've written
 to (or rather, they do, as it's always zero.)
 
 Changing the config file (if you're watching it) while this is testing
-/ supressing everything will probably break everything.  As will
+/ suppressing everything will probably break everything.  As will
 creating new appenders, etc...
 
 =head1 AUTHOR
 
+  Chia-liang Kao <clkao@clkao.org>
   Mark Fowler <mark@twoshortplanks.com>
 
 =head1 COPYRIGHT
 
+  Copyright 2010 Chia-liang Kao all rights reserved.
   Copyright 2005 Fotango Ltd all rights reserved.
+
   Licensed under the same terms as Perl itself.
 
 =cut
