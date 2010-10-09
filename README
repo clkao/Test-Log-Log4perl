@@ -2,8 +2,6 @@ NAME
     Test::Log::Log4perl - test log4perl
 
 SYNOPSIS
-      use Test::More tests => 1;
-
       # setup l4p
       use Log::Log4Perl;
       # do your normal Log::Log4Perl setup here
@@ -24,7 +22,7 @@ SYNOPSIS
 
       # test that those things matched
       Test::Log::Log4perl->end("Test that that logs okay");
-  
+
       # we also have a simplified version:
       {
         my $foo = Test::Log::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
@@ -80,7 +78,7 @@ DESCRIPTION
         log expected messages in the category passed.
 
     Test::Log::Log4perl->expect(%start_args, ['dotted.path', 'warn' =>
-    qr'this', 'warn' => qr'that'], ..)
+    qr(this), 'warn' => qr(that)], ..)
         Class convenience method. Used like this:
 
           { # start local scope
@@ -89,10 +87,11 @@ DESCRIPTION
           } # $foo goes out of scope; this triggers the test.
 
     start
-        Class method. Start logging. When you call this method it temporarly
-        redirects all logging from the standard logging locations to the
-        internal logging routine until end is called. Takes parameters to
-        change the behavior of this (and only this) test. See below.
+        Class method. Start logging. When you call this method it
+        temporarily redirects all logging from the standard logging
+        locations to the internal logging routine until end is called. Takes
+        parameters to change the behavior of this (and only this) test. See
+        below.
 
     debug(@what)
     info(@what)
@@ -112,7 +111,7 @@ DESCRIPTION
     Sometimes you're going to be testing something that generates a load of
     spurious log messages that you simply want to ignore without testing
     their contents, but you don't want to have to reconfigure your log file.
-    The simpliest way to do this is to do:
+    The simplest way to do this is to do:
 
       use Test::Log::Log4perl;
       Test::Log::Log4perl->suppress_logging;
@@ -121,18 +120,18 @@ DESCRIPTION
     (for example, by changing the config file and use Log4perl's
     "init_and_watch" functionality) after this call has been made.
 
-    This function will be effectivly a no-op if the enviromental variable
-    "NO_SUPRESS_LOGGING" is set to a true value (so if your code is behaving
-    weirdly you can turn all the logging back on from the command line
-    without changing any of the code)
+    This function will be effectively a no-op if the environmental variable
+    "NO_SUPPRESS_LOGGING" is set to a true value (so if your code is
+    behaving weirdly you can turn all the logging back on from the command
+    line without changing any of the code)
 
-  Selectivly Ignoring Logging Messages By Priority
+  Selectively Ignoring Logging Messages By Priority
     It's a bad idea to completely ignore all messages. What you probably
     want to do is ignore some of the trivial messages that you don't care
     about, and just test that there aren't any unexpected messages of a set
     priority.
 
-    You can temporarly ignore any logging messages that are made by passing
+    You can temporarily ignore any logging messages that are made by passing
     parameters to the "start" routine
 
       # for this test, just ignore DEBUG, INFO, and WARN
@@ -163,9 +162,9 @@ DESCRIPTION
       use Log::Log4perl qw(:levels);
       Test::Log::Log4perl->start( ignore_priority => $ALL );
 
-    You can also perminatly effect what things are ignored with the
+    You can also permanently effect what things are ignored with the
     "ignore_priority" method call. This persists between tests and isn't
-    autoically reset after each call to "start".
+    automatically reset after each call to "start".
 
       # ignore DEBUG, INFO and WARN for all future tests
       Test::Log::Log4perl->ignore_priority("warn");
@@ -180,20 +179,23 @@ DESCRIPTION
       # ignore nothing (messages will be logged reguardless of priority)
       Test::Log::Log4perl->ignore_priority("nothing");
 
-    Obviously, you may temporarly override whatever perminant
+    Obviously, you may temporarily override whatever permanent.
 
 BUGS
     Logging methods don't return the number of appenders they've written to
     (or rather, they do, as it's always zero.)
 
     Changing the config file (if you're watching it) while this is testing /
-    supressing everything will probably break everything. As will creating
+    suppressing everything will probably break everything. As will creating
     new appenders, etc...
 
 AUTHOR
+      Chia-liang Kao <clkao@clkao.org>
       Mark Fowler <mark@twoshortplanks.com>
 
 COPYRIGHT
+      Copyright 2010 Chia-liang Kao all rights reserved.
       Copyright 2005 Fotango Ltd all rights reserved.
+
       Licensed under the same terms as Perl itself.
 

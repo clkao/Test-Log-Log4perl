@@ -15,7 +15,7 @@ use Carp qw(croak);
 use Scalar::Util qw(blessed);
 use Log::Log4perl qw(:levels);
 
-our $VERSION = '0.1002';
+our $VERSION = '0.29';
 
 =head1 NAME
 
