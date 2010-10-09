@@ -496,6 +496,7 @@ foreach my $level (qw(debug info warn error fatal))
 
   # we need to pass the number to log
   my $level_int = Log::Log4perl::Level::to_priority(uc($level));
+  *{"is_".$level} = sub { 1 };
   *{$level} = sub {
    my $self = shift;
    $self->log($level_int, @_)
