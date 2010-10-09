@@ -1,6 +1,8 @@
-package Test::Log4perl;
+package Test::Log::Log4perl;
 use base qw(Class::Accessor::Chained);
 __PACKAGE__->mk_accessors(qw(category));
+
+use 5.8.8;
 
 use strict;
 use warnings;
@@ -17,7 +19,7 @@ our $VERSION = '0.1002';
 
 =head1 NAME
 
-Test::Log4perl - test log4perl
+Test::Log::Log4perl - test log4perl
 
 =head1 SYNOPSIS
 
@@ -26,14 +28,14 @@ Test::Log4perl - test log4perl
   # setup l4p
   use Log::Log4Perl;
   # do your normal Log::Log4Perl setup here
-  use Test::Log4perl;
+  use Test::Log::Log4perl;
 
   # get the loggers
   my $logger  = Log::Log4perl->get_logger("Foo::Bar");
-  my $tlogger = Test::Log4perl->get_logger("Foo::Bar");
+  my $tlogger = Test::Log::Log4perl->get_logger("Foo::Bar");
 
   # test l4p
-  Test::Log4perl->start();
+  Test::Log::Log4perl->start();
 
   # declare we're going to log something
   $tlogger->error("This is a test");
@@ -42,11 +44,11 @@ Test::Log4perl - test log4perl
   $logger->error("This is a test");
 
   # test that those things matched
-  Test::Log4perl->end("Test that that logs okay");
+  Test::Log::Log4perl->end("Test that that logs okay");
   
   # we also have a simplified version:
   {
-    my $foo = Test::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
+    my $foo = Test::Log::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
     # ... do something that should log 'hello'
   }
   # $foo goes out of scope; this triggers the test.  
@@ -58,18 +60,18 @@ with Log::Log4perl.  It checks that we get what, and only what, we
 expect logged by your code.
 
 The basic process is very simple.  Within your test script you get
-one or more loggers from B<Test::Log4perl> with the C<get_logger> method
+one or more loggers from B<Test::Log::Log4perl> with the C<get_logger> method
 just like you would with B<Log::Log4perl>.  You're going to use these
 loggers to declare what you think the code you're going to test should
 be logging.
 
   # declare a bunch of test loggers
-  my $tlogger = Test::Log4perl->get_logger("Foo::Bar");
+  my $tlogger = Test::Log::Log4perl->get_logger("Foo::Bar");
 
 Then, for each test you want to do you need to start up the module.
 
   # start the test
-  Test::Log4perl->start();
+  Test::Log::Log4perl->start();
 
 This diverts all subsequent attempts B<Log::Log4perl> makes to log
 stuff and records them internally rather than passing them though to
@@ -77,7 +79,7 @@ the Log4perl appenders as normal.
 
 You then need to declare with the loggers we created earlier what
 we hope Log4perl will be asked to log.  This is the same syntax as
-Test::Log4perl uses, except if you want you can use regular expressions:
+Test::Log::Log4perl uses, except if you want you can use regular expressions:
 
   $tlogger->debug("fish");
   $tlogger->warn(qr/bar/);
@@ -92,7 +94,7 @@ We finally need to tell B<Test::Log4Perl> that we're done and it
 should do the comparisons.
 
   # start the test
-  Test::Log4perl->end("test name");
+  Test::Log::Log4perl->end("test name");
 
 =head2 Methods
 
@@ -100,7 +102,7 @@ should do the comparisons.
 
 =item get_logger($category)
 
-Returns a new instance of Test::Log4perl that can be used to log
+Returns a new instance of Test::Log::Log4perl that can be used to log
 expected messages in the category passed.
 
 =cut
@@ -113,12 +115,12 @@ sub get_logger
   return $self;
 }
 
-=item Test::Log4perl->expect(%start_args, ['dotted.path', 'warn' => qr'this', 'warn' => qr'that'], ..)
+=item Test::Log::Log4perl->expect(%start_args, ['dotted.path', 'warn' => qr'this', 'warn' => qr'that'], ..)
 
 Class convenience method. Used like this:
 
   { # start local scope
-    my $foo = Test::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
+    my $foo = Test::Log::Log4perl->expect(['foo.bar.quux', warn => qr/hello/ ]);
     # ... do something that should log 'hello'
   } # $foo goes out of scope; this triggers the test.
 
@@ -356,8 +358,8 @@ of spurious log messages that you simply want to ignore without
 testing their contents, but you don't want to have to reconfigure
 your log file.  The simpliest way to do this is to do:
 
-  use Test::Log4perl;
-  Test::Log4perl->suppress_logging;
+  use Test::Log::Log4perl;
+  Test::Log::Log4perl->suppress_logging;
 
 All logging functions stop working.  Do not alter the Logging classes
 (for example, by changing the config file and use Log4perl's
@@ -399,49 +401,49 @@ You can temporarly ignore any logging messages that are made by
 passing parameters to the C<start> routine
 
   # for this test, just ignore DEBUG, INFO, and WARN
-  Test::Log4perl->start( ignore_priority => "warn" );
+  Test::Log::Log4perl->start( ignore_priority => "warn" );
 
   # you can use the levels constants to do the same thing
   use Log::Log4perl qw(:levels);
-  Test::Log4perl->start( ignore_priority => $WARN );
+  Test::Log::Log4perl->start( ignore_priority => $WARN );
 
 You might want to ignore all logging events at all (this can be used
 as quick way to not test the actual log messages, but just ignore the
 output.
 
   # for this test, ignore everything
-  Test::Log4perl->start( ignore_priority => "everything" );
+  Test::Log::Log4perl->start( ignore_priority => "everything" );
 
   # contary to readability, the same thing (try not to write this)
   use Log::Log4perl qw(:levels);
-  Test::Log4perl->start( ignore_priority => $OFF );
+  Test::Log::Log4perl->start( ignore_priority => $OFF );
 
 Or you might want to not ignore anything (which is the default, unless
 you've played with the method calls mentioned below:)
 
   # for this test, ignore nothing
-  Test::Log4perl->start( ignore_priority => "nothing" );
+  Test::Log::Log4perl->start( ignore_priority => "nothing" );
 
   # contary to readability, the same thing (try not to write this)
   use Log::Log4perl qw(:levels);
-  Test::Log4perl->start( ignore_priority => $ALL );
+  Test::Log::Log4perl->start( ignore_priority => $ALL );
 
 You can also perminatly effect what things are ignored with the
 C<ignore_priority> method call.  This persists between tests and isn't
 autoically reset after each call to C<start>.
 
   # ignore DEBUG, INFO and WARN for all future tests
-  Test::Log4perl->ignore_priority("warn");
+  Test::Log::Log4perl->ignore_priority("warn");
 
   # you can use the levels constants to do the same thing
   use Log::Log4perl qw(:levels);
-  Test::Log4perl->ignore_priority($WARN);
+  Test::Log::Log4perl->ignore_priority($WARN);
 
   # ignore everything (no log messages will be logged)
-  Test::Log4perl->ignore_priority("everything");
+  Test::Log::Log4perl->ignore_priority("everything");
 
   # ignore nothing (messages will be logged reguardless of priority)
-  Test::Log4perl->ignore_priority("nothing");
+  Test::Log::Log4perl->ignore_priority("nothing");
 
 Obviously, you may temporarly override whatever perminant
 
@@ -526,7 +528,7 @@ sub log
   } while ($filename eq $cur_filename || $filename eq $INC{"Log/Log4perl/Logger.pm"});
 
   # log it
-  push @Test::Log4perl::logged, {
+  push @Test::Log::Log4perl::logged, {
     category => $self->{category},  # oops, there goes encapsulation
     priority => $priority_name,
     message  => $message,

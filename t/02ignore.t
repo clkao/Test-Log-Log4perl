@@ -8,12 +8,12 @@ use Log::Log4perl;
 
 use Test::More tests => 2;
 use Test::Builder::Tester;
-use Test::Log4perl;
+use Test::Log::Log4perl;
 use Test::Exception;
 
 my $logger   = Log::Log4perl->get_logger("Foo");
-my $tlogger  = Test::Log4perl->get_logger("Foo");
-my $t2logger = Test::Log4perl->get_logger("Bar");
+my $tlogger  = Test::Log::Log4perl->get_logger("Foo");
+my $t2logger = Test::Log::Log4perl->get_logger("Bar");
 
 ########################################################
 
@@ -21,7 +21,7 @@ my $t2logger = Test::Log4perl->get_logger("Bar");
 
 test_out("ok 1 - Log4perl test");
 
-Test::Log4perl->start(
+Test::Log::Log4perl->start(
   ignore_priority => "warn",
 );
 
@@ -31,7 +31,7 @@ $logger->info("ignore me too");
 $logger->warn("ignore me as well");
 $logger->error("my hair is on fire!");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # but they go back at the start of the next thing
 
@@ -43,7 +43,7 @@ test_diag("          not 'error'");
 test_diag("  message was 'ignore me'");
 test_diag("          not 'my hair is on fire!'");
 test_diag(" (Offending log call from line ".(__LINE__+4)." in ".filename().")");
-Test::Log4perl->start();
+Test::Log::Log4perl->start();
 
 $tlogger->error("my hair is on fire!");
 $logger->debug("ignore me");
@@ -51,13 +51,13 @@ $logger->info("ignore me too");
 $logger->warn("ignore me as well");
 $logger->error("my hair is on fire!");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # test that we can ignore everything
 
 test_out("ok 3 - Log4perl test");
 
-Test::Log4perl->start(
+Test::Log::Log4perl->start(
   ignore_priority => "everything",
 );
 
@@ -67,7 +67,7 @@ $logger->warn("ignore me as well");
 $logger->error("ignore with pleasure");
 $logger->fatal("ignore this finally");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # but they go back at the start of the next thing
 
@@ -79,7 +79,7 @@ test_diag("          not 'error'");
 test_diag("  message was 'ignore me'");
 test_diag("          not 'my hair is on fire!'");
 test_diag(" (Offending log call from line ".(__LINE__+4)." in ".filename().")");
-Test::Log4perl->start();
+Test::Log::Log4perl->start();
 
 $tlogger->error("my hair is on fire!");
 $logger->debug("ignore me");
@@ -87,7 +87,7 @@ $logger->info("ignore me too");
 $logger->warn("ignore me as well");
 $logger->error("my hair is on fire!");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 test_test("ignoring priority");
 
@@ -97,12 +97,12 @@ test_test("ignoring priority");
 
 test_out("ok 1 - Log4perl test");
 
-Test::Log4perl->start(
+Test::Log::Log4perl->start(
   # this should be overriden
   ignore_priority => "error",
 );
 
-Test::Log4perl->ignore_priority("warn");
+Test::Log::Log4perl->ignore_priority("warn");
 
 $tlogger->error("my hair is on fire!");
 $logger->debug("ignore me");
@@ -110,14 +110,14 @@ $logger->info("ignore me too");
 $logger->warn("ignore me as well");
 $logger->error("my hair is on fire!");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # and they don't go back, the ignore priority
 # should still be set
 
 test_out("ok 2 - Log4perl test");
 
-Test::Log4perl->start();
+Test::Log::Log4perl->start();
 
 $tlogger->error("my hair is on fire!");
 $logger->debug("ignore me");
@@ -125,13 +125,13 @@ $logger->info("ignore me too");
 $logger->warn("ignore me as well");
 $logger->error("my hair is on fire!");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # though we can turn them off with ignore nothing
 
-Test::Log4perl->start();
+Test::Log::Log4perl->start();
 
-Test::Log4perl->ignore_priority("nothing");
+Test::Log::Log4perl->ignore_priority("nothing");
 
 test_out("not ok 3 - Log4perl test");
 test_fail(+15);
@@ -141,7 +141,7 @@ test_diag("          not 'error'");
 test_diag("  message was 'ignore me'");
 test_diag("          not 'my hair is on fire!'");
 test_diag(" (Offending log call from line ".(__LINE__+4)." in ".filename().")");
-Test::Log4perl->start();
+Test::Log::Log4perl->start();
 
 $tlogger->error("my hair is on fire!");
 $logger->debug("ignore me");
@@ -149,11 +149,11 @@ $logger->info("ignore me too");
 $logger->warn("ignore me as well");
 $logger->error("my hair is on fire!");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # and that's still set next time
 
-Test::Log4perl->start();
+Test::Log::Log4perl->start();
 
 test_out("not ok 4 - Log4perl test");
 test_fail(+16);
@@ -164,7 +164,7 @@ test_diag("  message was 'ignore me'");
 test_diag("          not 'my hair is on fire!'");
 test_diag(" (Offending log call from line ".(__LINE__+5)." in ".filename().")");
 
-Test::Log4perl->start();
+Test::Log::Log4perl->start();
 
 $tlogger->error("my hair is on fire!");
 $logger->debug("ignore me");
@@ -172,12 +172,12 @@ $logger->info("ignore me too");
 $logger->warn("ignore me as well");
 $logger->error("my hair is on fire!");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # and we can ignore everything
 
-Test::Log4perl->start();
-Test::Log4perl->ignore_priority("everything");
+Test::Log::Log4perl->start();
+Test::Log::Log4perl->ignore_priority("everything");
 
 test_out("ok 5 - Log4perl test");
 
@@ -187,12 +187,12 @@ $logger->warn("ignore me as well");
 $logger->error("ignore with pleasure");
 $logger->fatal("ignore this finally");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # and things are still ignored
 
-Test::Log4perl->start();
-Test::Log4perl->ignore_priority("everything");
+Test::Log::Log4perl->start();
+Test::Log::Log4perl->ignore_priority("everything");
 
 test_out("ok 6 - Log4perl test");
 
@@ -202,12 +202,12 @@ $logger->warn("ignore me as well");
 $logger->error("ignore with pleasure");
 $logger->fatal("ignore this finally");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # and we can ignore nothing
 
-Test::Log4perl->start();
-Test::Log4perl->ignore_priority("nothing");
+Test::Log::Log4perl->start();
+Test::Log::Log4perl->ignore_priority("nothing");
 
 test_out("ok 7 - Log4perl test");
 
@@ -222,11 +222,11 @@ $logger->warn("don't ignore me as well");
 $logger->error("don't ignore with pleasure");
 $logger->fatal("don't ignore this finally");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 # and that remains set too
 
-Test::Log4perl->start();
+Test::Log::Log4perl->start();
 
 test_out("ok 8 - Log4perl test");
 
@@ -241,7 +241,7 @@ $logger->warn("don't ignore me as well");
 $logger->error("don't ignore with pleasure");
 $logger->fatal("don't ignore this finally");
 
-Test::Log4perl->end();
+Test::Log::Log4perl->end();
 
 test_test("ignoring priority forever");
 

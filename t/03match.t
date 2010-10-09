@@ -24,16 +24,16 @@ use Test::Exception;
 # start the tests
 use Test::More tests => 8;
 
-use Test::Log4perl;
+use Test::Log::Log4perl;
 
-ok(Test::Log4perl::_matches("foo", "foo"), "foo foo");
-ok(!Test::Log4perl::_matches("foo", "bar"), "foo bar");
+ok(Test::Log::Log4perl::_matches("foo", "foo"), "foo foo");
+ok(!Test::Log::Log4perl::_matches("foo", "bar"), "foo bar");
 
-ok(Test::Log4perl::_matches("foo", qr/foo/), "foo qr/foo/");
-ok(!Test::Log4perl::_matches("foo", qr/bar/), "foo qr/bar/");
+ok(Test::Log::Log4perl::_matches("foo", qr/foo/), "foo qr/foo/");
+ok(!Test::Log::Log4perl::_matches("foo", qr/bar/), "foo qr/bar/");
 
-dies_ok { Test::Log4perl::_matches("foo", {}) } "hash";
-dies_ok { Test::Log4perl::_matches("foo", bless({}, "bar"))} "object";
+dies_ok { Test::Log::Log4perl::_matches("foo", {}) } "hash";
+dies_ok { Test::Log::Log4perl::_matches("foo", bless({}, "bar"))} "object";
 
 package Wibble;
 use overload '""' => "as_string", fallback => 1;
@@ -41,5 +41,5 @@ sub as_string { "foo" };
 
 package main;
 
-ok(Test::Log4perl::_matches("foo", bless({}, "Wibble")), "foo foo object");
-ok(!Test::Log4perl::_matches("bar", bless({}, "Wibble")), "bar foo object ");
+ok(Test::Log::Log4perl::_matches("foo", bless({}, "Wibble")), "foo foo object");
+ok(!Test::Log::Log4perl::_matches("bar", bless({}, "Wibble")), "bar foo object ");

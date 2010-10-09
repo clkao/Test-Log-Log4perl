@@ -2,7 +2,7 @@
 use Module::Build;
 
 Module::Build->new(
-  module_name   => 'Test::Log4perl',
+  module_name   => 'Test::Log::Log4perl',
   license       => 'perl',
   create_readme => 1,
   create_makefile_pl => 'traditional',

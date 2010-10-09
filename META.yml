@@ -22,7 +22,7 @@ provides:
   Log::Log4perl::Logger::Interception:
     file: lib/Test/Log4perl.pm
     version: 0.1001
-  Test::Log4perl:
+  Test::Log::Log4perl:
     file: lib/Test/Log4perl.pm
     version: 0.1001
 generated_by: Module::Build version 0.2609
