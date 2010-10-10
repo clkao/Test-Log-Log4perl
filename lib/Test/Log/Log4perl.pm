@@ -4,9 +4,6 @@ use warnings;
 
 use 5.8.8;
 
-use base qw(Class::Accessor::Chained);
-__PACKAGE__->mk_accessors(qw(category));
-
 use Test::Builder;
 my $Tester = Test::Builder->new();
 
@@ -109,8 +106,7 @@ expected messages in the category passed.
 sub get_logger
 {
   my $class = shift;
-  my $self = bless {}, $class;
-  $self->category(shift);
+  my $self = bless { category => shift }, $class;
   return $self;
 }
 
@@ -225,7 +221,7 @@ sub _log_at_level
   my $message  = shift;
 
   push @expected, {
-    category => $self->category,
+    category => $self->{category},
     priority => $priority,
     message  => $message,
   };
