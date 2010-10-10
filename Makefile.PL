@@ -7,7 +7,6 @@ build_requires 'Test::More';
 requires 'Log::Log4perl';
 requires 'Test::Builder::Tester';
 requires 'Test::Exception';
-requires 'Lingua::EN::Numbers::Ordinate';
 auto_include_deps;
 author_tests('xt');
 auto_set_repository;

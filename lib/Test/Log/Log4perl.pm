@@ -7,7 +7,6 @@ use 5.8.8;
 use Test::Builder;
 my $Tester = Test::Builder->new();
 
-use Lingua::EN::Numbers::Ordinate;
 use Carp qw(croak);
 use Scalar::Util qw(blessed);
 use Log::Log4perl qw(:levels);
@@ -282,7 +281,7 @@ sub end
     if (%wrong)
     {
       $Tester->ok(0, $name);
-      $Tester->diag(ordinate($no)." message logged wasn't what we expected:");
+      $Tester->diag("Message $no logged wasn't what we expected:");
       foreach my $thingy (qw(category priority message))
       {
         if ($wrong{ $thingy })

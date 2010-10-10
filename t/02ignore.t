@@ -37,7 +37,7 @@ Test::Log::Log4perl->end();
 
 test_out("not ok 2 - Log4perl test");
 test_fail(+15);
-test_diag("1st message logged wasn't what we expected:");
+test_diag("Message 1 logged wasn't what we expected:");
 test_diag(" priority was 'debug'");
 test_diag("          not 'error'");
 test_diag("  message was 'ignore me'");
@@ -73,7 +73,7 @@ Test::Log::Log4perl->end();
 
 test_out("not ok 4 - Log4perl test");
 test_fail(+15);
-test_diag("1st message logged wasn't what we expected:");
+test_diag("Message 1 logged wasn't what we expected:");
 test_diag(" priority was 'debug'");
 test_diag("          not 'error'");
 test_diag("  message was 'ignore me'");
@@ -135,7 +135,7 @@ Test::Log::Log4perl->ignore_priority("nothing");
 
 test_out("not ok 3 - Log4perl test");
 test_fail(+15);
-test_diag("1st message logged wasn't what we expected:");
+test_diag("Message 1 logged wasn't what we expected:");
 test_diag(" priority was 'debug'");
 test_diag("          not 'error'");
 test_diag("  message was 'ignore me'");
@@ -157,7 +157,7 @@ Test::Log::Log4perl->start();
 
 test_out("not ok 4 - Log4perl test");
 test_fail(+16);
-test_diag("1st message logged wasn't what we expected:");
+test_diag("Message 1 logged wasn't what we expected:");
 test_diag(" priority was 'debug'");
 test_diag("          not 'error'");
 test_diag("  message was 'ignore me'");

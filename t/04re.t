@@ -29,7 +29,7 @@ test_test("basic qr test");
 
 test_out("not ok 1 - Log4perl test");
 test_fail(+9);
-test_diag("1st message logged wasn't what we expected:");
+test_diag("Message 1 logged wasn't what we expected:");
 test_diag("  message was 'my hair is on fire!'");
 test_diag("     not like '(?-xism:tree)'");
 test_diag(" (Offending log call from line ".(__LINE__+4)." in ".filename().")");

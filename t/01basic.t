@@ -57,7 +57,7 @@ test_test("expecting but not getting anything");
 
 test_out("not ok 1 - Log4perl test");
 test_fail(+9);
-test_diag("1st message logged wasn't what we expected:");
+test_diag("Message 1 logged wasn't what we expected:");
 test_diag("  message was 'your hair is on fire!'");
 test_diag("          not 'my hair is on fire!'");
 test_diag(" (Offending log call from line ".(__LINE__+4)." in ".filename().")");
@@ -73,7 +73,7 @@ test_test("getting wrong message");
 
 test_out("not ok 1 - Log4perl test");
 test_fail(+9);
-test_diag("1st message logged wasn't what we expected:");
+test_diag("Message 1 logged wasn't what we expected:");
 test_diag(" priority was 'warn'");
 test_diag("          not 'error'");
 test_diag(" (Offending log call from line ".(__LINE__+4)." in ".filename().")");
@@ -89,7 +89,7 @@ test_test("getting wrong priority");
 
 test_out("not ok 1 - Log4perl test");
 test_fail(+9);
-test_diag("1st message logged wasn't what we expected:");
+test_diag("Message 1 logged wasn't what we expected:");
 test_diag(" category was 'Foo'");
 test_diag("          not 'Bar'");
 test_diag(" (Offending log call from line ".(__LINE__+4)." in ".filename().")");
@@ -105,7 +105,7 @@ test_test("getting wrong category");
 
 test_out("not ok 1 - Log4perl test");
 test_fail(+13);
-test_diag("1st message logged wasn't what we expected:");
+test_diag("Message 1 logged wasn't what we expected:");
 test_diag(" category was 'Foo'");
 test_diag("          not 'Bar'");
 test_diag(" priority was 'warn'");
