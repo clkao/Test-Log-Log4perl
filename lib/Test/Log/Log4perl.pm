@@ -12,7 +12,7 @@ use Scalar::Util qw(blessed);
 use Log::Log4perl qw(:levels);
 
 $Log::Log4perl::Logger::INITIALIZED = 1;
-our $VERSION = '0.29';
+our $VERSION = '0.30';
 
 =head1 NAME
 
