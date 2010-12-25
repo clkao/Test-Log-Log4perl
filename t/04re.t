@@ -27,11 +27,13 @@ test_test("basic qr test");
 
 ########################################################
 
+my $DEFAULT_FLAGS = $] < 5.013005 ? '-xism' : '^';
+
 test_out("not ok 1 - Log4perl test");
 test_fail(+9);
 test_diag("Message 1 logged wasn't what we expected:");
 test_diag("  message was 'my hair is on fire!'");
-test_diag("     not like '(?-xism:tree)'");
+test_diag("     not like '(?$DEFAULT_FLAGS:tree)'");
 test_diag(" (Offending log call from line ".(__LINE__+4)." in ".filename().")");
 
 Test::Log::Log4perl->start();
