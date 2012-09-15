@@ -28,6 +28,28 @@ test_test("basic ok test");
 
 ########################################################
 
+test_out("ok 1 - Log4perl test");
+
+Test::Log::Log4perl->start();
+$tlogger->error("my hair is on fire!");
+$logger->error("my hair is on ", "fire!");
+Test::Log::Log4perl->end();
+
+test_test("basic ok test");
+
+########################################################
+
+test_out("ok 1 - Log4perl test");
+
+Test::Log::Log4perl->start();
+$tlogger->error("my hair is on ", "fire!");
+$logger->error("my hair is on fire!");
+Test::Log::Log4perl->end();
+
+test_test("basic ok test");
+
+########################################################
+
 test_out("not ok 1 - Log4perl test");
 test_fail(+6);
 test_diag("Unexpected error of type 'Foo':");

@@ -217,7 +217,7 @@ sub _log_at_level
 {
   my $self     = shift;
   my $priority = shift;
-  my $message  = shift;
+  my $message  = ref $_[0] ? shift : join '', grep defined, @_;
 
   push @expected, {
     category => $self->{category},
@@ -500,7 +500,7 @@ sub log
 {
   my $self     = shift;
   my $priority = shift;
-  my $message  = shift;
+  my $message  = join '', grep defined, @_;
 
   # are we logging anything or what?
   if ($priority <= ($temp{ignore_priority} || 0) or
