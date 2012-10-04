@@ -12,7 +12,7 @@ use Scalar::Util qw(blessed);
 use Log::Log4perl qw(:levels);
 
 $Log::Log4perl::Logger::INITIALIZED = 1;
-our $VERSION = '0.30';
+our $VERSION = '0.31';
 
 =head1 NAME
 
@@ -217,7 +217,7 @@ sub _log_at_level
 {
   my $self     = shift;
   my $priority = shift;
-  my $message  = shift;
+  my $message  = ref $_[0] ? shift : join '', grep defined, @_;
 
   push @expected, {
     category => $self->{category},
@@ -226,7 +226,7 @@ sub _log_at_level
   };
 }
 
-foreach my $level (qw(debug info warn error fatal))
+foreach my $level (qw(trace debug info warn error fatal))
 {
   no strict 'refs';
   *{$level} = sub {
@@ -483,7 +483,7 @@ sub set_temp { my ($class, $key, $val) = @_; $temp{$key} = $val }
 sub set_perm { my ($class, $key, $val) = @_; $perm{$key} = $val }
 sub ended { my ($class) = @_; $temp{ended} }
 # all the basic logging functions
-foreach my $level (qw(debug info warn error fatal))
+foreach my $level (qw(trace debug info warn error fatal))
 {
   no strict 'refs';
 
@@ -500,7 +500,7 @@ sub log
 {
   my $self     = shift;
   my $priority = shift;
-  my $message  = shift;
+  my $message  = join '', grep defined, @_;
 
   # are we logging anything or what?
   if ($priority <= ($temp{ignore_priority} || 0) or
@@ -538,7 +538,7 @@ package Log::Log4perl::Logger::IgnoreAll;
 use base qw(Log::Log4perl::Logger);
 
 # all the functions we don't want
-foreach my $level (qw(debug info warn error fatal log))
+foreach my $level (qw(trace debug info warn error fatal log))
 {
   no strict 'refs';
   *{$level} = sub { return () }
