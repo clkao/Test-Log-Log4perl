@@ -6,7 +6,7 @@ use warnings;
 use Log::Log4perl;
 # do some setup here...honest guv
 
-use Test::More tests => 9;
+use Test::More tests => 11;
 use Test::Builder::Tester;
 use Test::Log::Log4perl;
 use Test::Exception;
